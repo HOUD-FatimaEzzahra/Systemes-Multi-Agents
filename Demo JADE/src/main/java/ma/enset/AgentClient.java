@@ -4,6 +4,10 @@ import jade.core.Agent;
 
 public class AgentClient extends Agent {
     @Override
+    protected void setup(){
+
+    }
+   /* @Override
     protected void setup() {
         System.out.println("La méthode setup() est appelée");
     }
@@ -19,5 +23,5 @@ public class AgentClient extends Agent {
     @Override
     protected void takeDown() {
         System.out.println("La méthode takeDown() est appelée");
-    }
+    }*/
 }
