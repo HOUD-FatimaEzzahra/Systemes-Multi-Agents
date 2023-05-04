@@ -1,4 +1,4 @@
-package ma.enset.tp_sm1_new;
+package ma.enset;
 
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;

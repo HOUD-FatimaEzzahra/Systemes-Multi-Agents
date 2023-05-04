@@ -1,4 +1,4 @@
-package ma.enset.tp_sm1_new;
+package ma.enset;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

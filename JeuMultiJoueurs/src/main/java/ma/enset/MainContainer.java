@@ -1,4 +1,4 @@
-package ma.enset.tp_sm1_new;
+package ma.enset;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;

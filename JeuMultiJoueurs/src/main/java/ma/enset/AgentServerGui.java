@@ -1,4 +1,4 @@
-package ma.enset.tp_sm1_new;
+package ma.enset;
 
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -19,8 +19,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-public class AgentClientGui extends Application {
-    private AgentClient agentClient;
+public class AgentServerGui extends Application {
+    private AgentServer agentServer;
     ObservableList<String> data= FXCollections.observableArrayList();
     public static void main(String[] args) {
         launch(args);
@@ -28,7 +28,7 @@ public class AgentClientGui extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         startContainer();
-        primaryStage.setTitle("Agent Client");
+        primaryStage.setTitle("Agent Server");
         BorderPane root=new BorderPane();
         Label labelMsg=new Label("Message :");
         TextField textFieldMsg=new TextField();
@@ -46,20 +46,19 @@ public class AgentClientGui extends Application {
             guiEvent.addParameter(textFieldMsg.getText());
             data.add("==>>"+textFieldMsg.getText());
             textFieldMsg.setText("");
-            agentClient.onGuiEvent(guiEvent);
+            agentServer.onGuiEvent(guiEvent);
         });
     }
     private void startContainer() throws StaleProxyException {
-        Runtime runtime=Runtime.instance();
-        ProfileImpl profile=new ProfileImpl();
-        profile.setParameter(ProfileImpl.MAIN_HOST,"localhost");
-        AgentContainer container=runtime.createAgentContainer(profile);
-        AgentController agentController=container.createNewAgent("client","ma.enset.tp_sm1_new.AgentClient",new Object[]{this});
-        agentController.start();
+            Runtime runtime = Runtime.instance();
+            ProfileImpl profile = new ProfileImpl();
+            profile.setParameter(ProfileImpl.MAIN_HOST,"localhost");
+            AgentContainer container = runtime.createAgentContainer(profile);
+            AgentController agentController=container.createNewAgent("server","ma.enset.tp_sm1_new.AgentServer",new Object[]{this});
+            agentController.start();
     }
-
-    public void setAgentClient(AgentClient agentClient) {
-        this.agentClient = agentClient;
+    public void setAgentServer(AgentServer agentServer) {
+        this.agentServer = agentServer;
     }
     public void showMessage(String message){
         Platform.runLater(()->{
