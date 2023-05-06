@@ -54,7 +54,7 @@ public class AgentServerGui extends Application {
             ProfileImpl profile = new ProfileImpl();
             profile.setParameter(ProfileImpl.MAIN_HOST,"localhost");
             AgentContainer container = runtime.createAgentContainer(profile);
-            AgentController agentController=container.createNewAgent("server","ma.enset.tp_sm1_new.AgentServer",new Object[]{this});
+            AgentController agentController=container.createNewAgent("server","ma.enset.AgentServer",new Object[]{this});
             agentController.start();
     }
     public void setAgentServer(AgentServer agentServer) {

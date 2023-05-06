@@ -1,112 +1,69 @@
 package ma.enset;
 
 import jade.core.AID;
-import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.Behaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 
+import java.util.Random;
+
 public class AgentClient extends GuiAgent {
-    private AgentClientGui clientGui;
+    private AgentClientGui agentClientGui;
+    private int guess;
+    private int min = 0;
+    private int max = 100;
+
     @Override
     protected void setup() {
-        System.out.println("*** Client: la méthode setup *****");
-        clientGui=(AgentClientGui) getArguments()[0];
-       clientGui.setAgentClient(this);
-        addBehaviour(new CyclicBehaviour() {
+        System.out.println("*** la méthode setup *****");
+        agentClientGui = (AgentClientGui) getArguments()[0];
+        agentClientGui.setAgentClient(this);
+
+        // Ajouter un comportement pour envoyer des devinettes toutes les 5 secondes
+        addBehaviour(new TickerBehaviour(this, 5000) {
+            @Override
+            protected void onTick() {
+                guess = new Random().nextInt(max - min) + min;
+                ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+                msg.addReceiver(new AID("server", AID.ISLOCALNAME));
+                msg.setContent(String.valueOf(guess));
+                send(msg);
+                System.out.println("J'ai envoyé la devinette : " + guess);
+                agentClientGui.showMessage("==> J'ai envoyé la devinette : " + guess);
+            }
+        });
+
+        // Ajouter un comportement pour recevoir les réponses du serveur
+        addBehaviour(new Behaviour() {
+            private boolean done = false;
+
             @Override
             public void action() {
                 ACLMessage receivedMSG = receive();
-                if (receivedMSG!=null){
-                    clientGui.showMessage("<<=="+receivedMSG.getContent());
+                if (receivedMSG != null) {
+                    agentClientGui.showMessage("<<==" + receivedMSG.getContent());
                     System.out.println(receivedMSG.getContent());
-                    System.out.println(receivedMSG.getSender().getName());
-                }else {
+                    done = true;
+                } else {
                     block();
                 }
-
-            }}
-        );
-        /*ACLMessage message=new ACLMessage(ACLMessage.REQUEST);
-        message.setContent("bonjour serveur ce message et pour demander un service");
-        message.addReceiver(new AID("server",AID.ISLOCALNAME));
-        send(message);*/
-        //addBehaviour(new );
-        //generic behaviour
-        /*addBehaviour(new Behaviour() {
-            private int conteur;
-            @Override
-            public void action() {
-                System.out.println("**** Contneur = "+conteur+" *****");
-                conteur++;
             }
 
             @Override
             public boolean done() {
-                return conteur==10?true:false;
-            }
-        });*/
-       /* addBehaviour(new OneShotBehaviour() {
-            @Override
-            public void action() {
-                System.out.println("**** One Shot Behaviour ******");
-            }
-        });*/
-        /*addBehaviour(new CyclicBehaviour() {
-            @Override
-            public void action() {
-                System.out.println("**** Cyclic Behaviour *******");
-            }
-        });*/
-      /*addBehaviour(new TickerBehaviour(this,5000) {
-          @Override
-          protected void onTick() {
-              System.out.println("***** Ticker Behaviour *****");
-          }
-      });*/
-       /* addBehaviour(new WakerBehaviour(this,5000) {
-            @Override
-            protected void onWake() {
-                System.out.println("**** Waker Behaviour ****");
-            }
-        });*/
-       /* ParallelBehaviour parallelBehaviour=new ParallelBehaviour();
-        parallelBehaviour.addSubBehaviour(new CyclicBehaviour() {
-            @Override
-            public void action() {
-                System.out.println("***** Cyclic Behaviour 1 **** ");
+                return done;
             }
         });
-        parallelBehaviour.addSubBehaviour(new CyclicBehaviour() {
-            @Override
-            public void action() {
-                System.out.println("***** Cyclic Behaviour 2 **** ");
-            }
-        });
-        addBehaviour(parallelBehaviour);*/
-    }
-
-    @Override
-    protected void beforeMove() {
-        System.out.println("*** Client:  la méthode beforeMove *****");
-    }
-
-    @Override
-    protected void afterMove() {
-        System.out.println("*** Client: la méthode afterMove *****");
-    }
-
-    @Override
-    protected void takeDown() {
-        System.out.println("*** Client: la méthode takeDown *****");
     }
 
     @Override
     protected void onGuiEvent(GuiEvent guiEvent) {
-        String parameter =(String) guiEvent.getParameter(0);
-        ACLMessage message=new ACLMessage(ACLMessage.REQUEST);
-        message.addReceiver(new AID("server",AID.ISLOCALNAME));
-        message.setContent(parameter);
-        send(message);
+        if (guiEvent.getType() == 1) {
+            // L'utilisateur a changé les bornes
+            min = (int) guiEvent.getParameter(0);
+            max = (int) guiEvent.getParameter(1);
+        }
     }
 }
