@@ -8,6 +8,7 @@ import jade.lang.acl.ACLMessage;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -22,8 +23,8 @@ public class ClientAgent extends Agent {
                 byte[] decodedPRK=Base64.getDecoder().decode(encodedPRK);
                 try {
                     KeyFactory keyFactory=KeyFactory.getInstance("RSA");
-                    PrivateKey privateKey=keyFactory.generatePrivate(new X509EncodedKeySpec(decodedPRK));
-                    Signature signature=Signature.getInstance("RSAWithSHA256");
+                    PrivateKey privateKey=keyFactory.generatePrivate(new PKCS8EncodedKeySpec(decodedPRK));
+                    Signature signature=Signature.getInstance("SHA256withRSA");
                     signature.initSign(privateKey);
                     signature.update(documents.getBytes());
                     byte[]sign=signature.sign();

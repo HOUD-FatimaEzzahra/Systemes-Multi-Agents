@@ -13,7 +13,7 @@ public class ServerContainer {
         ProfileImpl profile=new ProfileImpl();
         profile.setParameter(Profile.MAIN_HOST,"localhost");
         AgentContainer agentContainer=runtime.createAgentContainer(profile);
-        String encodedPBK="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIspL5RcZYKvjkA+zfvQdeCkcjLlKlmZuC+IHypO4C53PyjXtnM8XSlBfy/NNcMrTZKNyQ5KSEXOdrZUlq484vcCAwEAAQ==\n";
+        String encodedPBK="MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAIspL5RcZYKvjkA+zfvQdeCkcjLlKlmZuC+IHypO4C53PyjXtnM8XSlBfy/NNcMrTZKNyQ5KSEXOdrZUlq484vcCAwEAAQ==";
 
         AgentController serverAgent=agentContainer.createNewAgent("server", ServerAgent.class.getName(),new Object[]{encodedPBK});
         serverAgent.start();
