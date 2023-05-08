@@ -12,7 +12,7 @@ public class ClientContainer {
         Runtime runtime=Runtime.instance();
         ProfileImpl profile=new ProfileImpl();
         profile.setParameter(Profile.MAIN_HOST,"localhost");
-        AgentContainer agentContainer=runtime.createMainContainer(profile);
+        AgentContainer agentContainer=runtime.createAgentContainer(profile);
         String password="1234567812345678";
         AgentController clientAgent=agentContainer.createNewAgent("client",ClientAgent.class.getName(),new Object[]{password});
         clientAgent.start();
