@@ -16,6 +16,7 @@ public class SimpleContainer {
         AgentController saller2=agentContainer.createNewAgent("saller2", SallerAgent.class.getName(), new Object[]{"10000"});
         AgentController buyer=agentContainer.createNewAgent("buyer", BuyerAgent.class.getName(), new Object[]{});
         saller1.start();
+        saller2.start();
         buyer.start();
     }
 }

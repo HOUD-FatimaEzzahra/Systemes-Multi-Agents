@@ -48,6 +48,7 @@ public class BuyerAgent extends Agent {
                 if (receivedMsg!=null){
                     switch (receivedMsg.getPerformative()){
                         case ACLMessage.PROPOSE :
+                            cpt++;
                             double price = Double.parseDouble(receivedMsg.getContent());
                             if (price<bestPrice){
                                 bestPrice=price;

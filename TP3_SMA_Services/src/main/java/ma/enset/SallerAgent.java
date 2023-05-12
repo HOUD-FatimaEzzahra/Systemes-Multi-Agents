@@ -2,6 +2,7 @@ package ma.enset;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -12,7 +13,7 @@ public class SallerAgent extends Agent {
     private String price;
     @Override
     protected void setup() {
-        addBehaviour(new CyclicBehaviour() {
+        addBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
                 price=getArguments()[0].toString();
@@ -57,13 +58,7 @@ public class SallerAgent extends Agent {
             }
         });
     }
-
     @Override
     protected void takeDown() {
-        try {
-            DFService.deregister(this);
-        } catch (FIPAException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
