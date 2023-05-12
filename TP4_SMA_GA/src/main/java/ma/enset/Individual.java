@@ -1,6 +1,6 @@
 package ma.enset;
 
-public class Individual {
+public class Individual implements Comparable {
     int [] chromosome = new int[GAUtils.CHROMOSOME_SIZE];
     int fitness ;
 
@@ -23,5 +23,12 @@ public class Individual {
 
     public int[] getChromosome() {
         return chromosome;
+    }
+
+    public int compareTo(Object o) {
+        Individual individual = (Individual) o;
+        if (this.fitness > individual.fitness) return 1;
+        else if (this.fitness < individual.fitness) return -1;
+        else return 0;
     }
 }
