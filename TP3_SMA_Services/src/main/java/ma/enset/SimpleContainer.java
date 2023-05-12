@@ -12,11 +12,10 @@ public class SimpleContainer {
         ProfileImpl profileImpl = new ProfileImpl();
         profileImpl.setParameter(ProfileImpl.MAIN_HOST, "localhost");
         AgentContainer agentContainer=runtime.createAgentContainer(profileImpl);
-        AgentController saller1=agentContainer.createNewAgent("saller1", SallerAgent1.class.getName(), new Object[]{});
-        AgentController saller2=agentContainer.createNewAgent("saller2", SallerAgent2.class.getName(), new Object[]{});
+        AgentController saller1=agentContainer.createNewAgent("saller1", SallerAgent.class.getName(), new Object[]{"12000"});
+        AgentController saller2=agentContainer.createNewAgent("saller2", SallerAgent.class.getName(), new Object[]{"10000"});
         AgentController buyer=agentContainer.createNewAgent("buyer", BuyerAgent.class.getName(), new Object[]{});
         saller1.start();
-        saller2.start();
         buyer.start();
     }
 }

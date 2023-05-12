@@ -16,7 +16,7 @@ public class BuyerAgent extends Agent {
     DFAgentDescription[] dfAgentD;
     private AID bestSeller;
     private double bestPrice=Double.MAX_VALUE;
-    private  int cpt=0
+    private  int cpt=0;
     @Override
     protected void setup() {
         addBehaviour(new CyclicBehaviour() {
@@ -59,9 +59,19 @@ public class BuyerAgent extends Agent {
                                 aclMessage.setContent("Proposel accepted");
                                 send(aclMessage);
                             }
-
+                            break;
+                        case ACLMessage.AGREE:
+                            ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
+                            aclMessage.addReceiver(receivedMsg.getSender());
+                            aclMessage.setContent("i want to buy it");
+                            send(aclMessage);
+                            break;
+                        case ACLMessage.CONFIRM:
+                            System.out.println(receivedMsg.getSender()+" : "+receivedMsg.getContent());
+                            break;
                     }
-                }
+                }else
+                    block();
             }
         });
     }

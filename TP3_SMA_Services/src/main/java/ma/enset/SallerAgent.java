@@ -2,20 +2,20 @@ package ma.enset;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
-public class SallerAgent1 extends Agent {
+public class SallerAgent extends Agent {
+    private String price;
     @Override
     protected void setup() {
         addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
+                price=getArguments()[0].toString();
                 DFAgentDescription dfAgentDescription = new DFAgentDescription();
                 ServiceDescription serviceDescription = new ServiceDescription();
                 serviceDescription.setType("pc");
@@ -41,15 +41,29 @@ public class SallerAgent1 extends Agent {
                             send(aclMessage);
                             break;
                         case ACLMessage.ACCEPT_PROPOSAL:
-                            ACLMessage aclMessage1 = new ACLMessage(ACLMessage.CONFIRM);
-                            aclMessage1.setContent("Accepted !");
+                            ACLMessage aclMessage1 = new ACLMessage(ACLMessage.AGREE);
+                            aclMessage1.setContent("i can send it to you");
                             aclMessage1.addReceiver(receivedMsg.getSender());
                             send(aclMessage1);
+                            break;
+                        case ACLMessage.REQUEST:
+                            ACLMessage aclMessage2 = new ACLMessage(ACLMessage.CONFIRM);
+                            aclMessage2.setContent("i will send it to you");
+                            aclMessage2.addReceiver(receivedMsg.getSender());
+                            send(aclMessage2);
                             break;
                     }
                 }
             }
         });
+    }
 
+    @Override
+    protected void takeDown() {
+        try {
+            DFService.deregister(this);
+        } catch (FIPAException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
