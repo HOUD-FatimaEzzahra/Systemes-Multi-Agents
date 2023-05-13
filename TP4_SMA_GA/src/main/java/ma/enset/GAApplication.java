@@ -10,5 +10,6 @@ public class GAApplication {
         genetiqueAlgorithm.initPopulation();
         genetiqueAlgorithm.sortPopulation();
         genetiqueAlgorithm.showPopulation();
+        genetiqueAlgorithm.crossover();
     }
 }

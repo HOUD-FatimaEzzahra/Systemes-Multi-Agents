@@ -4,12 +4,11 @@ public class Individual implements Comparable {
     int [] chromosome = new int[GAUtils.CHROMOSOME_SIZE];
     int fitness ;
 
-    public Individual() {
-        for (int i = 0; i < GAUtils.CHROMOSOME_SIZE; i++) {
-            if(Math.random() >= 0.5) chromosome[i] = 1;
-            else chromosome[i] = 0;
-        }
+    public Individual(int[] chromosome) {
+        this.chromosome = chromosome;
+        calculateFitness();
     }
+    public Individual(){}
 
     public void calculateFitness() {
         for (int gene: chromosome) {
@@ -30,5 +29,9 @@ public class Individual implements Comparable {
         if (this.fitness > individual.fitness) return 1;
         else if (this.fitness < individual.fitness) return -1;
         else return 0;
+    }
+
+    public void setChromosome(int[] newChromosome1) {
+        this.chromosome = newChromosome1;
     }
 }
