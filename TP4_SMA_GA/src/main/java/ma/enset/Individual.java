@@ -1,18 +1,26 @@
 package ma.enset;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class Individual implements Comparable {
-    int [] chromosome = new int[GAUtils.CHROMOSOME_SIZE];
-    int fitness ;
+    private int []chromosome=new int[GAUtils.CHROMOSOME_SIZE];
+    private int fitness;
+
+    public Individual() {
+        Random random=new Random();
+        for (int i=0;i<GAUtils.CHROMOSOME_SIZE;i++) {
+            chromosome[i]= random.nextInt(2);
+        }
+    }
 
     public Individual(int[] chromosome) {
-        this.chromosome = chromosome;
-        calculateFitness();
+        this.chromosome = Arrays.copyOf(chromosome,GAUtils.CHROMOSOME_SIZE);
     }
-    public Individual(){}
 
-    public void calculateFitness() {
-        for (int gene: chromosome) {
-            fitness+= gene;
+    public void calculateFintess(){
+        for (int gene:chromosome) {
+            fitness+=gene;
         }
     }
 
@@ -24,14 +32,19 @@ public class Individual implements Comparable {
         return chromosome;
     }
 
-    public int compareTo(Object o) {
-        Individual individual = (Individual) o;
-        if (this.fitness > individual.fitness) return 1;
-        else if (this.fitness < individual.fitness) return -1;
-        else return 0;
+    public void setChromosome(int[] chromosome) {
+        this.chromosome = chromosome;
     }
 
-    public void setChromosome(int[] newChromosome1) {
-        this.chromosome = newChromosome1;
+    @Override
+    public int compareTo(Object o) {
+        Individual individual=(Individual) o;
+        if (this.fitness>individual.fitness){
+            return  1;
+        }else if(this.fitness< individual.fitness){
+            return -1;
+        }else{
+            return 0;
+        }
     }
 }
